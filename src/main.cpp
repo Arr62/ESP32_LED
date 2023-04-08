@@ -12,7 +12,7 @@ extern "C" {
         timer_1.timer_num = LEDC_TIMER_0;
         timer_1.clk_cfg = LEDC_AUTO_CLK;
         timer_1.duty_resolution = LEDC_TIMER_12_BIT;
-        timer_1.freq_hz = 10000;    //10 [kHz]
+        timer_1.freq_hz = 15000;    //15 [kHz]
         ledc_timer_config(&timer_1);
         //channel conf
         ledc_channel_config_t channel_1{};
