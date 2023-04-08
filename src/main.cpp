@@ -11,8 +11,8 @@ extern "C" {
         timer_1.speed_mode = LEDC_HIGH_SPEED_MODE;
         timer_1.timer_num = LEDC_TIMER_0;
         timer_1.clk_cfg = LEDC_AUTO_CLK;
-        timer_1.duty_resolution = LEDC_TIMER_10_BIT;
-        timer_1.freq_hz = 50000;    //50 [kHz]
+        timer_1.duty_resolution = LEDC_TIMER_12_BIT;
+        timer_1.freq_hz = 10000;    //10 [kHz]
         ledc_timer_config(&timer_1);
         //channel conf
         ledc_channel_config_t channel_1{};
@@ -30,13 +30,13 @@ extern "C" {
             if (condition) {
                 ledc_set_duty(channel_1.speed_mode, channel_1.channel, pwm++);
                 ledc_update_duty(channel_1.speed_mode, channel_1.channel);
-                ets_delay_us(5000);  //5 [ms]
-                if (pwm >= 1023) condition = !condition;
+                ets_delay_us(1000);  //1 [ms]
+                if (pwm >= 4095) condition = !condition;
             }
             else {
                 ledc_set_duty(channel_1.speed_mode, channel_1.channel, pwm--);
                 ledc_update_duty(channel_1.speed_mode, channel_1.channel);
-                ets_delay_us(5000);  //5 [ms]
+                ets_delay_us(1000);  //1 [ms]
                 if (pwm <= 0) condition = !condition;
             }
         }
