@@ -3,6 +3,7 @@
 #include "freertos/task.h"
 #include "driver/ledc.h"
 #include <rom/ets_sys.h>
+#include <cmath>
 
 extern "C" {
     void app_main () {
@@ -11,8 +12,8 @@ extern "C" {
         timer_1.speed_mode = LEDC_HIGH_SPEED_MODE;
         timer_1.timer_num = LEDC_TIMER_0;
         timer_1.clk_cfg = LEDC_AUTO_CLK;
-        timer_1.duty_resolution = LEDC_TIMER_12_BIT;
-        timer_1.freq_hz = 15000;    //15 [kHz]
+        timer_1.duty_resolution = LEDC_TIMER_14_BIT;
+        timer_1.freq_hz = 4880;    //4.88 [kHz]
         ledc_timer_config(&timer_1);
         //channel conf
         ledc_channel_config_t channel_1{};
@@ -30,13 +31,13 @@ extern "C" {
             if (condition) {
                 ledc_set_duty(channel_1.speed_mode, channel_1.channel, pwm++);
                 ledc_update_duty(channel_1.speed_mode, channel_1.channel);
-                ets_delay_us(1000);  //1 [ms]
-                if (pwm >= 4095) condition = !condition;
+                ets_delay_us(500);  //0.5 [ms]
+                if (pwm >= pow(2, timer_1.duty_resolution) - 1) condition = !condition;
             }
             else {
                 ledc_set_duty(channel_1.speed_mode, channel_1.channel, pwm--);
                 ledc_update_duty(channel_1.speed_mode, channel_1.channel);
-                ets_delay_us(1000);  //1 [ms]
+                ets_delay_us(500);  //0.5 [ms]
                 if (pwm <= 0) condition = !condition;
             }
         }
